@@ -3,6 +3,7 @@ package com.caixaEletronico.controller;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.caixaEletronico.model.UserLogin;
 import com.caixaEletronico.model.Usuario;
@@ -31,12 +33,14 @@ public class UsuarioController {
 	private UsuarioRepository repository;
 	
 	@PostMapping("/logar")
-	public ResponseEntity<UserLogin> Autentication (@RequestBody UserLogin user) {
-		System.out.println(user);
-		usuarioService.logar(user);
-		return null;		
-//		return usuarioService.Logar(user).map(resp -> ResponseEntity.ok(resp))
-//				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+	@ResponseStatus(value = HttpStatus.MULTIPLE_CHOICES)
+	public HttpEntity<?> Autentication (@RequestBody UserLogin user) {
+		if(usuarioService.logar(user)) {
+			return ResponseEntity.ok("hasheada");
+			//TODO trocar resposta do método por MD5 de login
+		}
+		return ResponseEntity.EMPTY;
+
 	}
 	
 	@PostMapping("/cadastrar")
