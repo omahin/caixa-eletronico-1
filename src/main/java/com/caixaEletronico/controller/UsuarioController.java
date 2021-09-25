@@ -31,9 +31,12 @@ public class UsuarioController {
 	private UsuarioRepository repository;
 	
 	@PostMapping("/logar")
-	public ResponseEntity<UserLogin> Autentication (@RequestBody Optional<UserLogin> user) {
-		return usuarioService.Logar(user).map(resp -> ResponseEntity.ok(resp))
-				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+	public ResponseEntity<UserLogin> Autentication (@RequestBody UserLogin user) {
+		System.out.println(user);
+		usuarioService.logar(user);
+		return null;		
+//		return usuarioService.Logar(user).map(resp -> ResponseEntity.ok(resp))
+//				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 	
 	@PostMapping("/cadastrar")
